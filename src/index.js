@@ -9,25 +9,25 @@ const authors = [
     {
         name: 'Mark Twain',
         imageUrl: 'images/authors/mark-twain.jpg',
-        imageSrc: 'http://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Mark_Twain%2C_Brady-Handy_photo_portrait%2C_Feb_7%2C_1871%2C_cropped.jpg/400px-Mark_Twain%2C_Brady-Handy_photo_portrait%2C_Feb_7%2C_1871%2C_cropped.jpg',
+        imageSource: 'http://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Mark_Twain%2C_Brady-Handy_photo_portrait%2C_Feb_7%2C_1871%2C_cropped.jpg/400px-Mark_Twain%2C_Brady-Handy_photo_portrait%2C_Feb_7%2C_1871%2C_cropped.jpg',
         books: ['The Adventures of Huckleberry Finn']
     },
     {
         name: 'Joseph Conrad',
         imageUrl: 'images/authors/joseph-conrad.png',
-        imageSrc: 'http://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Joseph_Conrad.PNG/350px-Joseph_Conrad.PNG',
+        imageSource: 'http://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Joseph_Conrad.PNG/350px-Joseph_Conrad.PNG',
         books: ['Heart of Darkness']
     },
     {
         name: 'J.K. Rowling',
         imageUrl: 'images/authors/jk-rowling.jpg',
-        imageSrc: 'http://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/J._K._Rowling_2010.jpg/440px-J._K._Rowling_2010.jpg',
+        imageSource: 'http://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/J._K._Rowling_2010.jpg/440px-J._K._Rowling_2010.jpg',
         books: ['Harry Potter and the Sorcerers Stone']
     },
     {
         name: 'Stephen King',
         imageUrl: 'images/authors/stephen-king.jpg',
-        imageSrc: 'http://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Stephen_King%2C_Comicon.jpg/440px-Stephen_King%2C_Comicon.jpg',
+        imageSource: 'http://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Stephen_King%2C_Comicon.jpg/440px-Stephen_King%2C_Comicon.jpg',
         books: ['The Shining', 'IT']
     },
     {
@@ -61,8 +61,19 @@ function getTurnData(authors) {
 }
 
 const state = {
-    turnData: getTurnData(authors)
+    turnData: getTurnData(authors),
+    highlight: ''
 };
 
-ReactDOM.render(<AuthorQuiz {...state} />, document.getElementById('root'));
+function onAnswerSelected(answer) {
+    const isCorrect = state.turnData.author.books.some((book) => book === answer);
+    state.highlight = isCorrect ? 'correct' : 'wrong';
+    render();
+}
+
+function render() {
+    ReactDOM.render(<AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />, document.getElementById('root'));
+}
+
+render();
 registerServiceWorker();
